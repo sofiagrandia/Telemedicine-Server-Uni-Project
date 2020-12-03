@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +28,13 @@ public class TeleAsthmaServer implements Serializable{
         static ServerSocket serverSocket = null;
         static Socket socket = null;
         static ObjectOutputStream oos= null;
+        
+        static Calendar fecha = new GregorianCalendar();
+
+        static int año = fecha.get(Calendar.YEAR);
+        static int mes = fecha.get(Calendar.MONTH);
+        static int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        static String fechaActual= dia + "-" + mes + "-" + año;
         
     /**
      * @param args the command line arguments
@@ -75,7 +84,7 @@ public class TeleAsthmaServer implements Serializable{
         }
         try {
             objectInputStream = new ObjectInputStream(inputStream);
-           // File file = new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()+"/Data.txt");
+           // File file = new File("/Users/mariapalacios/Desktop/CEUCUARTO/Telemedicina"+patient.getId()+"/Data.txt");
            File file = new File("data.txt");
             oos= new ObjectOutputStream(new FileOutputStream(file));
             Object tmp;
@@ -121,9 +130,9 @@ public class TeleAsthmaServer implements Serializable{
             
             while ((tmp = objectInputStream.readObject()) != null) {
             Patient patient = (Patient) tmp;
-            File carpeta=new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()); 
+            File carpeta=new File("/Users/mariapalacios/Desktop/CEUCUARTO/Telemedicina/TelemedicinaPaciente"+patient.getId()); 
             carpeta.mkdir(); 
-            File file = new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()+"/pacienteInfo"+patient.getId()+".txt");
+            File file = new File("/Users/mariapalacios/Desktop/CEUCUARTO/Telemedicina/TelemedicinaPaciente"+patient.getId()+"/pacienteInfo"+fechaActual+".txt");
             oos= new ObjectOutputStream(new FileOutputStream(file));
                oos.writeObject(patient);
                 System.out.println(patient.toString());

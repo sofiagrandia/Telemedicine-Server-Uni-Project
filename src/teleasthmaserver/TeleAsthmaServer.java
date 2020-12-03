@@ -30,47 +30,13 @@ public class TeleAsthmaServer implements Serializable{
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, FileNotFoundException, ClassNotFoundException {
         
         
-        try {
-            serverSocket = new ServerSocket(9000);
-            socket = serverSocket.accept();
-            inputStream = socket.getInputStream();
-            System.out.println("Connection from the direction "
-                    + socket.getInetAddress());
-        } catch (IOException ex) {
-            System.out.println("It was not possible to start the server. Fatal error.");
-            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-1);
-        }
-        try {
-            objectInputStream = new ObjectInputStream(inputStream);
-            File file = new File("data.txt");
-            oos= new ObjectOutputStream(new FileOutputStream(file));
-            Object tmp;
-            
-            while ((tmp = objectInputStream.readObject()) != null) {
-                //Patient patient = (Patient) tmp;
-                //oos.writeObject(patient);
-                Data data = (Data) tmp;
-                oos.writeObject(data);
-                //System.out.println(patient.toString());
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-                Object aux = ois.readObject();
-                System.out.println(aux);
-            }
-            
-            // Mientras haya objetos
-            //ois.close();
-        } catch (EOFException ex) {
-            System.out.println("All data have been correctly read.");
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Unable to read from the client.");
-            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            releaseResources(objectInputStream, oos, socket, serverSocket);
-        }
+        //socketServerData();
+        socketServerPatient();
+        
+        
     }
 
     private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream oos, Socket socket, ServerSocket serverSocket) {
@@ -95,28 +61,83 @@ public class TeleAsthmaServer implements Serializable{
             Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private static void socketServerPatient(Patient patient) throws FileNotFoundException, IOException, ClassNotFoundException{
+    private static void socketServerData(){
+     try {
+            serverSocket = new ServerSocket(9000);
+            socket = serverSocket.accept();
+            inputStream = socket.getInputStream();
+            System.out.println("Connection from the direction "
+                    + socket.getInetAddress());
+        } catch (IOException ex) {
+            System.out.println("It was not possible to start the server. Fatal error.");
+            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-1);
+        }
+        try {
+            objectInputStream = new ObjectInputStream(inputStream);
+           // File file = new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()+"/Data.txt");
+           File file = new File("data.txt");
+            oos= new ObjectOutputStream(new FileOutputStream(file));
+            Object tmp;
+            
+            while ((tmp = objectInputStream.readObject()) != null) {
+                //Patient patient = (Patient) tmp;
+                //oos.writeObject(patient);
+                Data data = (Data) tmp;
+                oos.writeObject(data);
+                //System.out.println(patient.toString());
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+                Object aux = ois.readObject();
+                System.out.println(aux);
+            }
+            
+            // Mientras haya objetos
+            //ois.close();
+        } catch (EOFException ex) {
+            System.out.println("All data have been correctly read.");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Unable to read from the client.");
+            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            releaseResources(objectInputStream, oos, socket, serverSocket);
+        }   
+    }
+    private static void socketServerPatient() throws FileNotFoundException, IOException, ClassNotFoundException{
+            try{
             serverSocket = new ServerSocket(9000);
             socket = serverSocket.accept();
             inputStream = socket.getInputStream();
             objectInputStream = new ObjectInputStream(inputStream);
-            String path = "C:\\Users\\Sofía\\git\\repository2\\TeleAsthmaClient\\paciente"+patient.getId();
-            String file = "UserInfo.txt";
-            File f = new File (path,file);
 
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-           ;
+            
+            }catch (IOException ex) {
+            System.out.println("It was not possible to start the server. Fatal error.");
+            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-1);
+        }
+
+            try{
             Object tmp;
             
             while ((tmp = objectInputStream.readObject()) != null) {
-                patient = (Patient) tmp;
-                oos.writeObject(patient);
-             
-                //System.out.println(patient.toString());
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
-                Object aux = ois.readObject();
-                System.out.println(aux);
+            Patient patient = (Patient) tmp;
+            File carpeta=new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()); 
+            carpeta.mkdir(); 
+            File file = new File("/Users/amandaperez-porro/Desktop/pacientePrueba"+patient.getId()+"/pacienteInfo"+patient.getId()+".txt");
+            oos= new ObjectOutputStream(new FileOutputStream(file));
+               oos.writeObject(patient);
+                System.out.println(patient.toString());
+                //ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+                //Object aux = ois.readObject();
+                //System.out.println(aux);
             }
-    }
+    } catch (EOFException ex) {
+            System.out.println("All data have been correctly read.");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Unable to read from the client.");
+            Logger.getLogger(TeleAsthmaServer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            releaseResources(objectInputStream, oos, socket, serverSocket);
+        }
+}
 }

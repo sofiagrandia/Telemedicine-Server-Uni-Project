@@ -21,6 +21,8 @@ public class Data implements Serializable {
     public enum SYMPTOMS{NO_SYMPTOMS,BREATHING_DIFFICULTY,BREATHING_WHISTLING,CHEST_PREASSURE,INSMONIA, HEADACHE, OTHERS};
     public enum ACTIVITIES{EXERCISE,WITH_DOG,WITH_CAT,AT_HOME,SLEEPING,WORKING,OTHERS};
     public enum MEDICATION{NO_MEDICATION,RESCUE_INHALER,CONTROL_TREATMENT,ANTIHISTAMINES,IBUPROPHEN,PARACETAMOL,OTHERS};
+    
+    private int ID = 0;
     private ArrayList<Integer> ECG = new ArrayList();
     private ArrayList<Integer> time = new ArrayList();
     private ArrayList<Integer> ACC = new ArrayList();

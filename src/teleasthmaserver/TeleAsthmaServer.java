@@ -21,16 +21,16 @@ import java.util.logging.Logger;
  * @author Sofia
  */
 public class TeleAsthmaServer implements Serializable{
-
+        static InputStream inputStream = null;
+        static ObjectInputStream objectInputStream = null;
+        static ServerSocket serverSocket = null;
+        static Socket socket = null;
+        static ObjectOutputStream oos= null;
+        
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        InputStream inputStream = null;
-        ObjectInputStream objectInputStream = null;
-        ServerSocket serverSocket = null;
-        Socket socket = null;
-        ObjectOutputStream oos= null;
         
         
         try {
@@ -49,6 +49,7 @@ public class TeleAsthmaServer implements Serializable{
             File file = new File("data.txt");
             oos= new ObjectOutputStream(new FileOutputStream(file));
             Object tmp;
+            
             while ((tmp = objectInputStream.readObject()) != null) {
                 //Patient patient = (Patient) tmp;
                 //oos.writeObject(patient);
@@ -95,4 +96,27 @@ public class TeleAsthmaServer implements Serializable{
         }
     }
     
+    private static void socketServerPatient(Patient patient) throws FileNotFoundException, IOException, ClassNotFoundException{
+            serverSocket = new ServerSocket(9000);
+            socket = serverSocket.accept();
+            inputStream = socket.getInputStream();
+            objectInputStream = new ObjectInputStream(inputStream);
+            String path = "C:\\Users\\Sofía\\git\\repository2\\TeleAsthmaClient\\paciente"+patient.getId();
+            String file = "UserInfo.txt";
+            File f = new File (path,file);
+
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+           ;
+            Object tmp;
+            
+            while ((tmp = objectInputStream.readObject()) != null) {
+                patient = (Patient) tmp;
+                oos.writeObject(patient);
+             
+                //System.out.println(patient.toString());
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+                Object aux = ois.readObject();
+                System.out.println(aux);
+            }
+    }
 }

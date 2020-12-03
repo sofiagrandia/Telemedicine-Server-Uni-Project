@@ -10,25 +10,29 @@ public class Fecha implements Serializable{
     private int day;
     private int month;
     private int year;
-    private int hour;
-    private int min;
+
     
     public Fecha(){
         this.day=0;
         this.month=0;
         this.year=0;
-        this.hour=0;
-        this.min=0;
+       
     }
     
-    public Fecha(int day, int month, int year,int hour,int min){
+ 
+    public Fecha(int day, int month, int year){
         this.day=day;
         this.month=month;
         this.year=year;
-        this.hour=hour;
-        this.min=min;
+        
     }
 
+public Fecha(String day, String month, String year){
+        this.day= Integer.parseInt(day);
+        this.month=Integer.parseInt(month);
+        this.year=Integer.parseInt(year);
+       
+    }
     public int getDay() {
         return day;
     }
@@ -53,25 +57,17 @@ public class Fecha implements Serializable{
         this.year = year;
     }
 
-    public int getHour() {
-        return hour;
+    
+    public static Fecha setFechaComp(int day, int month, int year){
+        Fecha f = new Fecha (day, month, year);
+        return f;
     }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMin() {
-        return min;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
-    }
-
+    
+   
+    
     @Override
     public String toString() {
-        return "Date: " + "day=" + day + ", month=" + month + ", year=" + year + ", hour=" + hour + ", min=" + min + '\n';
+        return "Date: " + "day=" + day + ", month=" + month + ", year=" + year +  '\n';
     }
     
     

@@ -32,7 +32,7 @@ public class TeleAsthmaServer implements Serializable{
         static Calendar fecha = new GregorianCalendar();
 
         static int año = fecha.get(Calendar.YEAR);
-        static int mes = fecha.get(Calendar.MONTH);
+        static int mes = fecha.get(Calendar.MONTH)+1;
         static int dia = fecha.get(Calendar.DAY_OF_MONTH);
         static String fechaActual= dia + "-" + mes + "-" + año;
         
@@ -84,7 +84,7 @@ public class TeleAsthmaServer implements Serializable{
         }
         try {
             objectInputStream = new ObjectInputStream(inputStream);
-           // File file = new File("/Users/mariapalacios/Desktop/CEUCUARTO/Telemedicina"+patient.getId()+"/Data.txt");
+           //File file = new File("/Users/mariapalacios/Desktop/CEUCUARTO/Telemedicina/Telemedicina"+patient.getId()+"/Data" + fechaActual +".txt");
            File file = new File("data.txt");
             oos= new ObjectOutputStream(new FileOutputStream(file));
             Object tmp;
